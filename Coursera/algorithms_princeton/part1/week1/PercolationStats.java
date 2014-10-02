@@ -42,7 +42,7 @@ public class PercolationStats {
         Percolation p = new Percolation(N);
         boolean isPercolated = p.percolates();
 
-        while (isPercolated == false)
+        while (!isPercolated)
         {
             int x = StdRandom.uniform(N) + 1;
             int y = StdRandom.uniform(N) + 1;
@@ -56,7 +56,7 @@ public class PercolationStats {
             isPercolated = p.percolates();
         }
 
-        return (double)counter / (N * N);
+        return (double) counter / (N * N);
     }
 
     public static void main(String[] args)   // test client

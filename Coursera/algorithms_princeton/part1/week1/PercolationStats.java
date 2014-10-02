@@ -13,9 +13,9 @@ public class PercolationStats {
         thresholds = new double[iterationsNumber];
 
         for (int i = 0; i < iterationsNumber; i++) {
-            
+
             StdOut.printf("%3d: ", i);
-            
+
             double threshold = experiment(N);
             thresholds[i] = threshold;
         }
@@ -37,19 +37,6 @@ public class PercolationStats {
     {
         return mean() + 1.96 * stddev() / Math.sqrt(iterationsNumber);
     }
-    public static void main(String[] args)   // test client
-    {
-//        int N = Integer.parseInt(args[0]);
-//        int T = Integer.parseInt(args[1]);
-        int N = 200;
-        int T = 100;
-        
-        PercolationStats ps = new PercolationStats(N, T);
-
-        StdOut.printf("mean                    = %.16f\n", ps.mean());
-        StdOut.printf("stddev                  = %.16f\n", ps.stddev());
-        StdOut.printf("95% confidence interval = %.16f, %.16f", ps.confidenceLo(), ps.confidenceHi());
-    }
 
     // Private
     private double experiment(int N)
@@ -57,9 +44,9 @@ public class PercolationStats {
         int counter = 0;
         Percolation p = new Percolation(N);
         boolean isPercolated = p.percolates();
-        
+
         StdOut.println("Initially percolates");
-        
+
         while (isPercolated == false)
         {
             int x = StdRandom.uniform(N) + 1;
@@ -70,12 +57,24 @@ public class PercolationStats {
                 p.open(x, y);
                 counter += 1;
             }
-            
+
             isPercolated = p.percolates();
         }
-        
-//        StdOut.println(counter);
- 
+
         return counter / (N * N);
+    }
+
+        public static void main(String[] args)   // test client
+    {
+//        int N = Int®eger.parseInt(args[0]);
+//        int T = Integer.parseInt(args[1]);
+        int N = 200;
+        int T = 100;
+
+        PercolationStats ps = new PercolationStats(N, T);
+
+        StdOut.printf("mean                    = %.16f\n", ps.mean());
+        StdOut.printf("stddev                  = %.16f\n", ps.stddev());
+        StdOut.printf("95% confidence interval = %.16f, %.16f", ps.confidenceLo(), ps.confidenceHi());
     }
 }

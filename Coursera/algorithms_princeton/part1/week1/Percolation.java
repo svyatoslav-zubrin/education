@@ -87,7 +87,7 @@ public class Percolation {
         for (int i = 1; i <= problemSize; i++) {
             unionUF.union(bottomMostFakeIndex, coordConverter.D1FromD2(1, i)); 
             unionUF.union(topMostFakeIndex,    coordConverter.D1FromD2(problemSize, i));
-        }       
+        } 
     }
     
     // Public methods
@@ -245,13 +245,5 @@ public class Percolation {
         {
             unionUF.union(first1DCoordinate, second1DCoordinate);
         }
-    }
-
-
-    // main
-    public static void main(String[] args) {
-        
-        Percolation percolationItem = new Percolation(3);
-        StdOut.println(percolationItem.percolates());
     }
 }

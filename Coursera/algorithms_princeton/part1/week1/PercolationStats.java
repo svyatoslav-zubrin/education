@@ -13,9 +13,6 @@ public class PercolationStats {
         thresholds = new double[iterationsNumber];
 
         for (int i = 0; i < iterationsNumber; i++) {
-
-            StdOut.printf("%3d: ", i);
-
             double threshold = experiment(N);
             thresholds[i] = threshold;
         }
@@ -45,8 +42,6 @@ public class PercolationStats {
         Percolation p = new Percolation(N);
         boolean isPercolated = p.percolates();
 
-        StdOut.println("Initially percolates");
-
         while (isPercolated == false)
         {
             int x = StdRandom.uniform(N) + 1;
@@ -61,20 +56,18 @@ public class PercolationStats {
             isPercolated = p.percolates();
         }
 
-        return counter / (N * N);
+        return (double)counter / (N * N);
     }
 
-        public static void main(String[] args)   // test client
+    public static void main(String[] args)   // test client
     {
-//        int N = Int®eger.parseInt(args[0]);
-//        int T = Integer.parseInt(args[1]);
-        int N = 200;
-        int T = 100;
+        int N = Integer.parseInt(args[0]);
+        int T = Integer.parseInt(args[1]);
 
         PercolationStats ps = new PercolationStats(N, T);
 
         StdOut.printf("mean                    = %.16f\n", ps.mean());
         StdOut.printf("stddev                  = %.16f\n", ps.stddev());
-        StdOut.printf("95% confidence interval = %.16f, %.16f", ps.confidenceLo(), ps.confidenceHi());
+        StdOut.printf("95%% confidence interval = %.16f, %.16f", ps.confidenceLo(), ps.confidenceHi());
     }
 }

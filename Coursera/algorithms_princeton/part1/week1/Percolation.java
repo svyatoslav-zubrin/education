@@ -4,18 +4,22 @@ public class Percolation {
     private final int bottomIndex;
     
     private final int problemSize;
+    private final CoordinatesConverter coordConverter;
     private final WeightedQuickUnionUF unionUF;
-    private final boolean[][] grid2D;   // grid with sites either open or blocked
     private final boolean[] grid1D;   // grid with sites either open or blocked
     
-    /*
-     public Percolation(int N);                // create N-by-N grid, with all sites blocked
-     public void open(int i, int j);           // open site (row i, column j) if it is not already
-     public boolean isOpen(int i, int j);      // is site (row i, column j) open?
-     public boolean isFull(int i, int j);      // is site (row i, column j) full?
-     public boolean percolates();              // does the system percolate?
-     public static void main(String[] args);   // test client, optional
-     */
+    private enum CellPosition {
+        LeftSideCell, 
+        RightSideCell, 
+        TopSideCell, 
+        BottomSideCell,
+        LeftTopCornerCell,
+        LeftBottomCornerCell,
+        RightTopCornerCell,
+        RightBottomCorner,
+        CommonCell
+    }
+
     // Constructors
     
     public Percolation(int N) throws IllegalArgumentException {
@@ -23,44 +27,44 @@ public class Percolation {
         if (N <= 0) throw new IllegalArgumentException();
   
         problemSize = N;
+        coordConverter = CoordinatesConverter(problemSize);
+
         topIndex    = problemSize * problemSize + 1;
         bottomIndex = problemSize * problemSize;
         
-        /*
-        grid2D = new boolean[N][N];
-        for (int i = 0; i < problemSize; i++) {
-            for (int j = 0; j < problemSize; j++) {
-                grid2D[i][j] = false;
-            }
-        }
-        */
+        int size1D = problemSize * problemSize + 2;
         
-        int 1DSize = problemSize * problemSize + 2;
-        
-        grid1D = new boolean[1DSize];
-        for (int i = 0; i < 1DSize; i++) {
+        grid1D = new boolean[size1D];
+        for (int i = 0; i < size1D; i++) {
             grid1D[i] = false;
         }
         grid1D[bottomIndex] = true;
         grid1D[topIndex]    = true;
         
         // prepare union
-        unionUF = new WeightedQuickUnionUF(1DSize);
+        unionUF = new WeightedQuickUnionUF(size1D);
         // connect top and bottom items to 
-        for int (i = 1; i <= problemSize; i++) {
-            unionUF.union(bottomIndex, 1DZeroBasedIndexFrom2DOneBasedIndexes(1, i)); 
-            unionUF.union(topIndex, 1DZeroBasedIndexFrom2DOneBasedIndexes(problemSize, i));
+        for (int i = 1; i <= problemSize; i++) {
+            unionUF.union(bottomIndex, ZeroBased1DIndexFromOneBased2DIndexes(1, i)); 
+            unionUF.union(topIndex,    ZeroBased1DIndexFromOneBased2DIndexes(problemSize, i));
         }       
     }
     
     // Public methods
     
     public void open(int i, int j) {
-        grid2D[i][j] = true;
+        int current1DIndex = ZeroBased1DIndexFromOneBased2DIndexes(i, j);
+
+        // open the site
+        grid1D[current1DIndex] = true;
+
+        // connect it to all nearby opened sites
+        CellPosition cellPosition = this.getCellPosition(i, j);
+        openCell(cellPosition, current1DIndex);
     }
     
     public boolean isOpen(int i, int j) {
-        return grid2D[i][j];
+        return false; //grid2D[i][j];
     }
     
     public boolean isFull(int i, int j) {
@@ -79,17 +83,70 @@ public class Percolation {
     
     // Private methods
     
-    private int 1DZeroBasedIndexFrom2DOneBasedIndexes(int i, int j) {
+    private int ZeroBased1DIndexFromOneBased2DIndexes(int i, int j) {
         /*
+         *
          * Suppose i and j lies within [1...N]
          * Result index lies within [0...N)
+         *
          */
-        if (i < 1 || i > problemSize) throw new /*java.lang.*/IndexOutOfBoundsException();
-        if (j < 1 || j > problemSize) throw new /*java.lang.*/IndexOutOfBoundsException();
+        if (i < 1 || i > problemSize) throw new IndexOutOfBoundsException();
+        if (j < 1 || j > problemSize) throw new IndexOutOfBoundsException();
        
-        return (i - 1) * N + (j - 1);
+        return (i - 1) * problemSize + (j - 1);
     }
     
+    private CellPosition getCellPosition(int i, int j) {
+        return CommonCell;
+    }
+
+    private void openCell(int cellIndex1D, CellPosition cellPosition) {
+        /*
+         *
+         * Connect cell with all opened neighbour cells
+         * 
+         */
+			
+	        // , 
+	        // RightSideCell, 
+	        // TopSideCell, 
+	        // BottomSideCell,
+	        // LeftTopCornerCell,
+	        // LeftBottomCornerCell,
+	        // RightTopCornerCell,
+	        // RightBottomCorner,
+	        // CommonCell
+
+            int topIndex1D = cellIndex1D + problemSize;
+            int botIndex1D = cellIndex1D - problemSize;
+            int lftIndex1D = cellIndex1D - 1;
+            int rhtIndex1D = cellIndex1D + 1;
+			
+			switch (cellPosition) {
+				case LeftSideCell:
+				{
+                    if (grid1D[topIndex]) {
+
+                    }
+				}
+			}
+
+        // // left
+        // if (cellPosition == LeftSideCell
+        //     || cellPosition == LeftTopCornerCell
+        //     || cellPosition == LeftBottomCornerCell) 
+        // {
+
+        // }
+
+        // // top
+
+        // // right
+
+        // // bottom
+
+    }
+
     // main
     
     public static void main(String[] args) {
@@ -99,3 +156,36 @@ public class Percolation {
     }
 }
 
+class CoordinatesConverter {
+    
+    public int x, y;
+
+    private int dimension;
+
+    // Constructors
+
+    public CoordinatesConverter(int N) {
+
+        if (N <= 0) throw new IllegalArgumentException();
+
+        dimension = N;
+    }
+
+    // public methods
+
+    public int D1FromD2(int x, int y) {
+        return 0;
+    }
+
+    public Coord2D D2FromD1(int x) {
+        return Coord2D(1,1);
+    }
+}
+
+class Coord2D {
+    public int x, y;
+    public Coord2D (int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}

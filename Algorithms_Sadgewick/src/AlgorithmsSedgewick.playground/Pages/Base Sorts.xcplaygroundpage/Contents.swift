@@ -3,7 +3,7 @@
 import Foundation
 
 // tests with basic debug sequence
-//print("\nTests with basic sequence\n")
+print("\nTests with basic sequence\n")
 //print("------- Selection sort ------")
 //SortSelection.check(andLog: true)
 //print("\n------- Insertion sort ------")
@@ -14,6 +14,11 @@ import Foundation
 //SortSelectionBasedShell.check(andLog: true)
 //print("\n------- Merge sort ------")
 //SortMerge.check(andLog: true)
+//print("\n------- Quick sort ------")
+//SortQuick.check(andLog: true)
+//print("[\"a\", \"c\", \"e\", \"e\", \"i\", \"k\", \"l\", \"m\", \"o\", \"p\", \"q\", \"r\", \"s\", \"t\", \"u\", \"x\"]")
+print("\n------- Bubble sort ------")
+SortBubble.check(andLog: true)
 
 // tests with partially sorted sequence
 //print("\nTests with partially sorted sequence\n")

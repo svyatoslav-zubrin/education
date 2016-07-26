@@ -135,6 +135,7 @@ extension SortBase {
      */
     public static func check(andLog shouldLog: Bool = false) {
         var a: Array<String> = ["m", "e", "r", "g", "e", "s", "o", "r", "t", "e", "x", "a", "m", "p", "l", "e"]
+//        var a: Array<String> = ["k", "r", "a", "t", "e", "l", "e", "p", "u", "i", "m", "q", "c", "x", "o", "s"]
         sort(&a, shouldLog: shouldLog)
         assert(isSorted(a))
         if shouldLog { show(a) }
